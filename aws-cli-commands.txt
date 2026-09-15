@@ -1,0 +1,194 @@
+aws sts get-caller-identity    
+#Check your AWS credentials
+
+aws configure get region
+#first check your region
+
+aws configure set region ap-south-1
+#set ap-south-1 as region
+
+aws ec2 describe-images --owners 699475936303 --filters "Name=name,Values=ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*" "Name=state,Values=available" --query "Images | sort_by(@,&CreationDate)[-1].[ImageId,Name,CreationDate]" --output table
+#to get Ami Id of Ubuntu Machine in table format
+
+
+aws ec2 describe-images --owners 699475936303 --filters "Name=name,Values=ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*" "Name=state,Values=available" --query "Images | sort_by(@,&CreationDate)[-1].ImageId" --output text
+#to get Ami Id of Ubuntu Machine
+
+
+aws ec2 describe-images --owners 099720109477 --filters "Name=name,Values=ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*" "Name=state,Values=available" --query "Images | sort_by(@,&CreationDate)[-1].ImageId" --output text
+#to get Ami Id of Ubuntu Machine
+
+aws ec2 describe-images --owners 099720109477 --filters "Name=name,Values=ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*" "Name=state,Values=available" --query "Images | sort_by(@,&CreationDate)[-1].[ImageId,Name,CreationDate]" --output table
+#to get Ami Id of Ubuntu Machine in table format
+
+ami-0c0fd09cfe77b59dc #ubuntu AMI Id
+
+aws ec2 describe-key-pairs --key-names mum-srisolutions-kp
+#Verify your key pair
+
+aws ec2 run-instances --image-id ami-0c0fd09cfe77b59dc --instance-type t3.micro --key-name mum-srisolutions-kp --count 1
+#Create the EC2 instance
+
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=pending,running" --query "Reservations[].Instances[].{ID:InstanceId,State:State.Name,Type:InstanceType,IP:PublicIpAddress}" --output table
+#Get your new instance
+
+ssh -i "C:\Users\SESHU_VANI\Downloads\mum-srisolutions-kp.pem" ubuntu@PUBLIC_IP
+ssh -i "C:\Users\SESHU_VANI\Downloads\mum-srisolutions-kp.pem" ubuntu@13.201.20.148
+# Connect to Ubuntu
+
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=running"
+#check running EC2 instances 
+
+aws ec2 describe-instances `
+  --filters "Name=instance-state-name,Values=running" `
+  --query "Reservations[].Instances[].{ID:InstanceId,State:State.Name,Type:InstanceType,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress}" `
+  --output table
+#check running EC2 instances in table format
+
+aws ec2 describe-instances --query "Reservations[].Instances[].{ID:InstanceId,State:State.Name,Type:InstanceType,PublicIP:PublicIpAddress}"  --output table
+or
+aws ec2 describe-instances `
+  --query "Reservations[].Instances[].{ID:InstanceId,State:State.Name,Type:InstanceType,PublicIP:PublicIpAddress}" `
+  --output table
+# Check all instances
+
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --output table
+# running-instance details
+
+aws ec2 stop-instances --instance-ids i-0123456789abcdef
+aws ec2 stop-instances --instance-ids i-011c8f17bdb950492
+#to stop an ec2 instance
+ 
+i-011c8f17bdb950492 # instance ID
+
+aws ec2 describe-instances --instance-ids i-011c8f17bdb950492 --query "Reservations[].Instances[].{ID:InstanceId,State:State.Name}" --output table
+# Verify it's stopped
+
+aws ec2 describe-instances --query "Reservations[].Instances[].{ID:InstanceId,State:State.Name,Type:InstanceType,IP:PublicIpAddress}" --output table
+#First find the instance ID
+
+aws ec2 terminate-instances --instance-ids i-011c8f17bdb950492
+#terminate an instance
+
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].{ID:InstanceId,Name:Tags[?Key=='Name']|[0].Value,Type:InstanceType,IP:PublicIpAddress}" --output table
+# see all running instances 
+
+$ids = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].InstanceId" --output text
+$ids -split '\s+' | Where-Object { $_ } | ForEach-Object {
+    aws ec2 terminate-instances --instance-ids $_
+}
+# Terminate all running Instances
+
+
+$ids = (aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].InstanceId" --output text) -split '\s+'
+aws ec2 terminate-instances --instance-ids $ids
+
+$ids = (aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].InstanceId" --output text) -split '\s+' aws ec2 terminate-instances --instance-ids $ids
+# terminate all IDs in one AWS command
+
+
+foreach ($region in ($regions -split '\s+')) {
+    Write-Host "`n========== $region ==========" -ForegroundColor Cyan
+
+    aws ec2 describe-instances `
+        --region $region `
+        --query "Reservations[].Instances[].{ID:InstanceId,State:State.Name,Type:InstanceType,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress}" `
+        --output table
+}
+# show the instances for all the regions
+
+aws configure set region ""
+#reset the default region 
+
+notepad "$HOME\.aws\config"
+#region default file
+#in this delete all instead of [default]
+
+$regions = aws ec2 describe-regions --all-regions --query "Regions[].RegionName" --output json | ConvertFrom-Json
+#get the all the regions and assign to region variable
+
+$regions.Count
+#regions count
+
+
+$regions = @("ap-south-1", "us-east-1")
+
+foreach ($region in $regions) {
+    Write-Host "`n========== $region ==========" -ForegroundColor Green
+
+    aws ec2 describe-instances `
+        --region $region `
+        --query "Reservations[].Instances[].{ID:InstanceId,State:State.Name,Type:InstanceType,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress}" `
+        --output table
+}
+#display the instances in specific regions only
+
+$regions = @("ap-south-1", "us-east-1")
+
+foreach ($region in $regions) {
+    Write-Host "`n========== $region ==========" -ForegroundColor Green
+
+    aws ec2 describe-instances `
+        --region $region `
+        --filters "Name=instance-state-name,Values=stopped" `
+        --query "Reservations[].Instances[].{ID:InstanceId,State:State.Name,Type:InstanceType,PublicIP:PublicIpAddress}" `
+        --output table
+}
+#display the stopped instances for specific regions only
+
+$regions = @("ap-south-1", "us-east-1")
+
+foreach ($region in $regions) {
+    Write-Host "`n========== $region ==========" -ForegroundColor Green
+
+    aws ec2 describe-key-pairs `
+        --region $region `
+        --query "KeyPairs[].{Name:KeyName,ID:KeyPairId,Type:KeyType,Fingerprint:KeyFingerprint}" `
+        --output table
+}
+#display the list of keypairs for specific regions only
+
+
+foreach ($region in ($regions -split '\s+')) {
+    Write-Host "`n========== $region ==========" -ForegroundColor Cyan
+
+
+#foreach ($region in $regions) {
+    #Write-Host "`n========== $region ==========" -ForegroundColor Green
+
+    aws ec2 describe-key-pairs `
+        --region $region `
+        --query "KeyPairs[].{Name:KeyName,ID:KeyPairId,Type:KeyType,Fingerprint:KeyFingerprint}" `
+        --output table
+}
+#display the list of keypairs from all regions
+
+$regions = @("ap-south-1", "us-east-1")
+
+foreach ($region in $regions) {
+    aws ec2 describe-instances `
+        --region $region `
+        --query "Reservations[].Instances[].{Region:'$region',InstanceID:InstanceId,Name:Tags[?Key=='Name']|[0].Value,State:State.Name,Type:InstanceType,KeyPair:KeyName,PublicIP:PublicIpAddress}" `
+        --output table
+}
+#display instance and its attached key pairs for specific regions only
+
+aws ec2 describe-instances `
+    --region ap-south-1 `
+    --query "Reservations[].Instances[].{ID:InstanceId,Name:Tags[?Key=='Name']|[0].Value,State:State.Name}" `
+    --output table
+#display the list of instances
+
+aws ec2 create-tags `
+    --region ap-south-1 `
+    --resources i-0d82d99c532db4b18 `
+    --tags Key=Name,Value=Jenkins-Server
+aws ec2 create-tags `
+    --region ap-south-1 `
+    --resources i-0d82d99c532db4b18 `
+    --tags Key=Name,Value=shell scripting
+aws ec2 create-tags `
+    --region ap-south-1 `
+    --resources i-0d82d99c532db4b18 `
+    --tags "Key=Name,Value=shell scripting"
+#change the Name tag for an instance
