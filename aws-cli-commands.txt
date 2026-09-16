@@ -192,3 +192,141 @@ aws ec2 create-tags `
     --resources i-0d82d99c532db4b18 `
     --tags "Key=Name,Value=shell scripting"
 #change the Name tag for an instance
+
+===============================================================
+aws ec2 describe-instances --query "Reservations[].Instances[].[InstanceId,PrivateIpAddress,PublicIpAddress,State.Name]" --output table --region ap-south-1
+
+aws ec2 create-tags `
+    --region ap-south-1 `
+    --resources i-0f8f587f2b647eeca `
+    --tags "Key=Name,Value=Demo-Server"
+
+aws ec2 stop-instances --instance-ids i-0f8f587f2b647eeca
+
+aws ec2 start-instances --instance-ids i-0f8f587f2b647eeca
+
+ 
+
+ssh -i "C:\Users\SESHU_VANI\Downloads\mum-srisolutions-kp.pem" ubuntu@3.110.118.255
+
+i-0f8f587f2b647eeca
+3.110.118.255
+
+aws ec2 modify-instance-attribute --instance-id i-0f8f587f2b647eeca --instance-type '{\"Value\":\"t3.medium\"}' --region ap-south-1
+#to change the instance type of an ec2 instances
+
+aws iam list-users
+#to check the list of IAM Users
+
+aws iam list-attached-user-policies --user-name skkatamneni
+or
+aws iam list-attached-user-policies `
+  --user-name skkatamneni `
+  --query "AttachedPolicies[].[PolicyName,PolicyArn]" `
+  --output table
+or
+aws iam list-attached-user-policies --user-name skkatamneni --query "AttachedPolicies[].[PolicyName,PolicyArn]" --output table
+or
+aws iam list-user-policies `
+  --user-name seshu `
+  --query "PolicyNames[]" `
+  --output table
+#to check the policy Name of an User
+
+aws iam list-user-policies --user-name skkatamneni --query "PolicyNames[]" --output table
+#to check inline policyoes for the IAM User
+
+
+ami-0c0fd09cfe77b59dc
+aws ec2 run-instances --image-id ami-0c0fd09cfe77b59dc --instance-type t3.micro --key-name mum-srisolutions-kp --count 20 --region ap-south-1
+
+
+aws ec2 modify-instance-attribute --instance-id i-0386a7501c31d775f --disable-api-termination --region ap-south-1
+
+aws ec2 describe-instance-attribute --instance-id i-0386a7501c31d775f --attribute disableApiTermination --region ap-south-1
+
+aws ec2 terminate-instances --instance-id i-0386a7501c31d775f --region ap-south-1
+
+0fe07a454a2e09012
+aws ec2 terminate-instances --instance-id i-0fe07a454a2e09012 --region ap-south-1
+
+
+aws ec2 modify-instance-attribute --instance-id i-0386a7501c31d775f --no-disable-api-termination --region ap-south-1
+
+aws ec2 describe-instance-attribute `
+  --instance-id i-0f8f587f2b647eeca `
+  --attribute disableApiTermination `
+  --region ap-south-1
+
+while ($true) {
+    Clear-Host
+    Get-Date
+    aws ec2 describe-instances --query "Reservations[].Instances[].[InstanceId,State.Name,InstanceType]" --output table --region ap-south-1
+    Start-Sleep -Seconds 2
+}
+#watch live data with 2 sec refresh
+
+i-0386a7501c31d775f
+
+
+aws ec2 describe-instances `
+  --filters "Name=instance-state-name,Values=running" `
+  --query "Reservations[].Instances[].[InstanceId,State.Name,InstanceType]" `
+  --output table `
+  --region ap-south-1
+#to display the running instances
+
+aws ec2 terminate-instances --instance-ids $(aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].InstanceId" --output text --region ap-south-1) --region ap-south-1
+or
+$ids = (aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].InstanceId" --output text --region ap-south-1).Split()
+aws ec2 terminate-instances --instance-ids $ids --region ap-south-1
+#to terminate the instance whos instances are running state
+
+aws iam attach-user-policy --user-name skkatamneni --policy-arn arn:aws:iam::aws:policy/job-function/Billing
+#to give a user billing read-only access
+
+aws iam list-attached-user-policies --user-name seshu --query "AttachedPolicies[].[PolicyName,PolicyArn]" --output table
+#to display the policyies for the user
+
+aws ce get-cost-and-usage `
+  --time-period Start=2026-09-01,End=2026-09-17 `
+  --granularity MONTHLY `
+  --metrics UnblendedCost `
+  --region us-east-1
+or
+aws ce get-cost-and-usage `
+  --time-period Start=2026-09-01,End=2026-09-17 `
+  --granularity MONTHLY `
+  --metrics UnblendedCost `
+  --query "ResultsByTime[].Total.UnblendedCost" `
+  --output table `
+  --region us-east-1
+#to get the bill details for the month
+
+aws ce get-cost-and-usage `
+  --time-period Start=2026-09-01,End=2026-09-17 `
+  --granularity DAILY `
+  --metrics UnblendedCost `
+  --query "ResultsByTime[].[TimePeriod.Start,Total.UnblendedCost.Amount]" `
+  --output table `
+  --region us-east-1
+#display the daily cost and usage See daily cost
+
+aws ce get-cost-and-usage `
+  --time-period Start=2026-09-01,End=2026-09-17 `
+  --granularity MONTHLY `
+  --metrics UnblendedCost `
+  --group-by Type=DIMENSION,Key=SERVICE `
+  --output json `
+  --region us-east-1
+#See which AWS services are costing money
+
+
+aws ce get-cost-and-usage `
+  --time-period Start=2026-09-01,End=2026-09-17 `
+  --granularity MONTHLY `
+  --metrics UnblendedCost `
+  --group-by Type=DIMENSION,Key=SERVICE `
+  --output text `
+  --region us-east-1
+
