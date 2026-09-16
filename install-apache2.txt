@@ -34,3 +34,6 @@ aws ec2 authorize-security-group-ingress `
   --cidr 0.0.0.0/0 `
   --region ap-south-1
 #allow the port number 80
+
+scp -i "C:\Users\SESHU_VANI\Downloads\test-kp.pem" "C:\Users\SESHU_VANI\Downloads\index.html" ubuntu@35.154.205.142:/home/ubuntu/
+#copy files from windows to ubunu machine
