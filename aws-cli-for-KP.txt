@@ -1,0 +1,64 @@
+===================================================================================
+Key Pair
+===================================================================================
+aws ec2 create-key-pair `
+  --key-name test-kp `
+  --key-type rsa `
+  --key-format pem `
+  --region ap-south-1 `
+  --query "KeyMaterial" `
+  --output text | Out-File -Encoding ascii "C:\Users\SESHU_VANI\Downloads\test-kp.pem"
+#create Key Pair with Rsa Algorithm
+
+aws ec2 describe-key-pairs `
+  --key-names test-kp `
+  --region ap-south-1 `
+  --query "KeyPairs[0]" `
+  --output json
+#Verify the key pair 
+
+aws ec2 describe-key-pairs --key-names test-kp --region ap-south-1 --query "KeyPairs[0].[KeyName,KeyPairId,KeyType]" --output table
+#verify test-kp exists
+
+aws ec2 describe-images `
+  --owners 099720109477 `
+  --filters "Name=name,Values=ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*" `
+            "Name=state,Values=available" `
+            "Name=architecture,Values=x86_64" `
+  --query "sort_by(Images,&CreationDate)[-1].[ImageId,Name,CreationDate]" `
+  --output table `
+  --region ap-south-1
+#first find the current Ubuntu 24.04 AMI
+
+aws ec2 describe-images `
+  --owners 699475936303 `
+  --filters "Name=name,Values=ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*" `
+            "Name=state,Values=available" `
+            "Name=architecture,Values=x86_64" `
+  --query "sort_by(Images,&CreationDate)[-1].[ImageId,Name,CreationDate]" `
+  --output table `
+  --region ap-south-1
+
+aws ec2 run-instances `
+  --image-id ami-0c0fd09cfe77b59dc `
+  --instance-type t3.micro `
+  --key-name test-kp `
+  --count 1 `
+  --region ap-south-1
+#run an instance
+
+aws ec2 describe-instances `
+  --filters "Name=key-name,Values=test-kp" `
+  --query "Reservations[].Instances[].[InstanceId,State.Name,InstanceType,PrivateIpAddress,PublicIpAddress]" `
+  --output table `
+  --region ap-south-1
+#Get the instance status and IP
+
+aws ec2 describe-instances `
+  --filters "Name=key-name,Values=test-kp" "Name=instance-state-name,Values=pending,running" `
+  --query "Reservations[].Instances[].InstanceId" `
+  --output text `
+  --region ap-south-1
+#Get only the new instance ID
+
+ssh -i "C:\Users\SESHU_VANI\Downloads\test-kp.pem" ubuntu@35.154.205.142
