@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>S3 Static Website</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 22px;
+        }
+
+        .box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            color: #667eea;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🚀 S3 Static Website</h1>
+
+        <p>Welcome to my AWS S3 hosted website!</p>
+
+        <div class="box">
+            <h2>Deployment Successful ✅</h2>
+
+            <p>
+                This website is hosted directly from
+                an Amazon S3 bucket.
+            </p>
+
+            <button onclick="showMessage()">
+                Test Website
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        function showMessage() {
+            alert("S3 Static Website is working successfully! 🎉");
+        }
+    </script>
+
+</body>
+</html>
