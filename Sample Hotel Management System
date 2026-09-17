@@ -1,0 +1,658 @@
+<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Grand Palace Hotel</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: #1f3c88;
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(
+                rgba(0, 0, 0, 0.5),
+                rgba(0, 0, 0, 0.5)
+            ),
+            url("https://images.unsplash.com/photo-1566073771259-6a8506099945")
+            center/cover;
+
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 20px;
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1f3c88;
+        }
+
+        /* Rooms */
+        .rooms {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(250px, 1fr)
+            );
+
+            gap: 25px;
+        }
+
+        .room {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .room-icon {
+            font-size: 65px;
+            margin-bottom: 15px;
+        }
+
+        .room h3 {
+            color: #1f3c88;
+            margin-bottom: 10px;
+        }
+
+        .room p {
+            margin-bottom: 10px;
+        }
+
+        .price {
+            color: #e67e22;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        button {
+            background: #1f3c88;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #162d66;
+        }
+
+        /* Booking Form */
+        .booking {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            margin-top: 50px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .booking-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: none;
+            border-radius: 5px;
+        }
+
+        /* Statistics */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: #1f3c88;
+            color: white;
+            padding: 30px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .stat h2 {
+            font-size: 32px;
+        }
+
+        /* Footer */
+        footer {
+            background: #172337;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 8px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+
+    <header>
+
+        <div class="logo">
+            🏨 Grand Palace
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#rooms">Rooms</a>
+            <a href="#booking">Booking</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+    </header>
+
+
+    <!-- Hero -->
+
+    <section class="hero" id="home">
+
+        <div>
+
+            <h1>Welcome to Grand Palace</h1>
+
+            <p>
+                Comfortable rooms. Excellent service.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Rooms -->
+
+    <section class="container" id="rooms">
+
+        <h2 class="section-title">
+            Available Rooms
+        </h2>
+
+        <div class="rooms">
+
+            <div class="room">
+
+                <div class="room-icon">
+                    🛏️
+                </div>
+
+                <h3>Single Room</h3>
+
+                <p>Perfect for one guest</p>
+
+                <p class="price">
+                    ₹2,000 / night
+                </p>
+
+                <button
+                    onclick="selectRoom('Single Room')">
+                    Book Now
+                </button>
+
+            </div>
+
+
+            <div class="room">
+
+                <div class="room-icon">
+                    🛌
+                </div>
+
+                <h3>Double Room</h3>
+
+                <p>Comfortable room for two</p>
+
+                <p class="price">
+                    ₹3,500 / night
+                </p>
+
+                <button
+                    onclick="selectRoom('Double Room')">
+                    Book Now
+                </button>
+
+            </div>
+
+
+            <div class="room">
+
+                <div class="room-icon">
+                    🏨
+                </div>
+
+                <h3>Deluxe Room</h3>
+
+                <p>Luxury room with premium facilities</p>
+
+                <p class="price">
+                    ₹5,000 / night
+                </p>
+
+                <button
+                    onclick="selectRoom('Deluxe Room')">
+                    Book Now
+                </button>
+
+            </div>
+
+
+            <div class="room">
+
+                <div class="room-icon">
+                    👑
+                </div>
+
+                <h3>Suite</h3>
+
+                <p>Luxury suite for families</p>
+
+                <p class="price">
+                    ₹8,000 / night
+                </p>
+
+                <button
+                    onclick="selectRoom('Suite')">
+                    Book Now
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Booking -->
+
+    <section class="container" id="booking">
+
+        <div class="booking">
+
+            <h2 class="section-title">
+                Hotel Booking
+            </h2>
+
+            <form onsubmit="bookRoom(event)">
+
+                <div class="form-group">
+
+                    <label>
+                        Guest Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="guestName"
+                        placeholder="Enter guest name"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter email"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Check-in Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="checkin"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Check-out Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="checkout"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Room Type
+                    </label>
+
+                    <select id="roomType" required>
+
+                        <option value="">
+                            Select Room
+                        </option>
+
+                        <option value="Single Room">
+                            Single Room
+                        </option>
+
+                        <option value="Double Room">
+                            Double Room
+                        </option>
+
+                        <option value="Deluxe Room">
+                            Deluxe Room
+                        </option>
+
+                        <option value="Suite">
+                            Suite
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Number of Guests
+                    </label>
+
+                    <input
+                        type="number"
+                        id="guests"
+                        min="1"
+                        max="10"
+                        value="1"
+                        required>
+
+                </div>
+
+
+                <button type="submit">
+                    Confirm Booking
+                </button>
+
+            </form>
+
+
+            <div
+                class="booking-result"
+                id="bookingResult">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Statistics -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <h2>50+</h2>
+
+            <p>Rooms</p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>10,000+</h2>
+
+            <p>Guests</p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>4.8 ⭐</h2>
+
+            <p>Guest Rating</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+
+    <footer id="contact">
+
+        <p>
+            📞 +91 98765 43210
+        </p>
+
+        <p>
+            📧 info@grandpalace.com
+        </p>
+
+        <p>
+            © 2026 Grand Palace Hotel
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+
+    <script>
+
+        let bookingCount = 0;
+
+
+        function selectRoom(room) {
+
+            document.getElementById("roomType").value = room;
+
+            document
+                .getElementById("booking")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+
+        function bookRoom(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document.getElementById("guestName").value;
+
+            const room =
+                document.getElementById("roomType").value;
+
+            const checkin =
+                document.getElementById("checkin").value;
+
+            const checkout =
+                document.getElementById("checkout").value;
+
+            const guests =
+                document.getElementById("guests").value;
+
+
+            if (new Date(checkout) <= new Date(checkin)) {
+
+                alert(
+                    "Check-out date must be after check-in date."
+                );
+
+                return;
+
+            }
+
+
+            bookingCount++;
+
+
+            const bookingId =
+                "GP" +
+                String(bookingCount).padStart(4, "0");
+
+
+            const result =
+                document.getElementById("bookingResult");
+
+
+            result.style.display = "block";
+
+
+            result.innerHTML = `
+
+                <strong>Booking Confirmed!</strong>
+
+                <br><br>
+
+                Booking ID:
+                <strong>${bookingId}</strong>
+
+                <br>
+
+                Guest:
+                ${name}
+
+                <br>
+
+                Room:
+                ${room}
+
+                <br>
+
+                Check-in:
+                ${checkin}
+
+                <br>
+
+                Check-out:
+                ${checkout}
+
+                <br>
+
+                Guests:
+                ${guests}
+
+            `;
+
+        }
+
+    </script>
+
+</body>
+</html>
