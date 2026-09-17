@@ -1,0 +1,59 @@
+========================================================================
+Create New Instance with existibg KP and SG
+==========================================================================
+aws ec2 describe-key-pairs `
+  --region ap-south-1 `
+  --query "KeyPairs[*].[KeyName,KeyPairId,KeyType]" `
+  --output table
+#find existing KP
+
+Key Pairs
+mumbai-kp
+my-ec2-key
+sk-mumbai-kp
+mum-srisolutions-kp
+
+aws ec2 describe-security-groups `
+  --region ap-south-1 `
+  --query "SecurityGroups[*].[GroupId,GroupName,VpcId]" `
+  --output table
+#Find Existing Sg
+
+sg list
+K8s-sg
+default
+alltraffic - sg-0f8d50252a536b640
+
+aws ec2 describe-images `
+  --region ap-south-1 `
+  --owners 099720109477 `
+  --filters "Name=name,Values=ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*" "Name=state,Values=available" `
+  --query "Images | sort_by(@,&CreationDate)[-1].[ImageId,Name]" `
+  --output table
+#find AMI ID of Ubuntu
+
+AMI ID:
+ami-0c0fd09cfe77b59dc
+
+
+aws ec2 run-instances `
+  --region ap-south-1 `
+  --image-id ami-0c0fd09cfe77b59dc `
+  --instance-type t2.micro `
+  --key-name mum-srisolutions-kp `
+  --security-group-name alltraffic `
+  --count 1
+or
+aws ec2 run-instances --region ap-south-1 --image-id ami-0c0fd09cfe77b59dc --instance-type t2.micro --key-name mum-srisolutions-kp --security-group-name alltraffic --count 1
+
+aws ec2 run-instances --region ap-south-1 --image-id ami-0c0fd09cfe77b59dc --instance-type t2.micro --key-name mum-srisolutions-kp --security-group-ids sg-0f8d50252a536b640 --count 1
+
+aws ec2 stop-instances --region ap-south-1 --image-id ami-0c0fd09cfe77b59dc --instance-type t2.micro --key-name mum-srisolutions-kp --security-group-ids sg-0f8d50252a536b640 --count 1
+
+i-0a7d84f10f70a347b
+aws ec2 stop-instances --region ap-south-1 --iinstance-ids i-0a7d84f10f70a347b
+
+Public Ip:
+13.234.21.116
+ssh -i "C:\Users\SESHU_VANI\Downloads\mum-srisolutions-kp.pem" ubuntu@13.234.21.116
+scp -i "C:\Users\SESHU_VANI\Downloads\mum-srisolutions-kp.pem" "C:\Users\SESHU_VANI\Downloads\index.html" ubuntu@13.234.21.116:/home/ubuntu/
