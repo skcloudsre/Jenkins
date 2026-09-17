@@ -62,3 +62,17 @@ aws ec2 describe-instances `
 #Get only the new instance ID
 
 ssh -i "C:\Users\SESHU_VANI\Downloads\test-kp.pem" ubuntu@35.154.205.142
+
+aws ec2 describe-key-pairs --query 'KeyPairs[*].[KeyName,KeyPairId,KeyType]' --output table
+#List all EC2 key pairs
+
+aws ec2 describe-key-pairs --query 'KeyPairs[*].KeyName' --output table
+#List all EC2 key pairs in detailed format
+
+aws ec2 delete-key-pair --key-name my-keypair
+or
+aws ec2 delete-key-pair --key-pair-id key-0123456789abcdef
+#Delete a particular key pair
+
+aws ec2 describe-key-pairs --query 'KeyPairs[*].[KeyName,KeyPairId]' --output table
+#Verify that it was deleted
