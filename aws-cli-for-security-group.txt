@@ -1,0 +1,112 @@
+============================================================================================
+Security Groups
+============================================================================================
+aws ec2 describe-security-groups --query 'SecurityGroups[*].[GroupId,GroupName,VpcId,Description]' --output table --region ap-south-1
+#List all Security Groups
+
+aws ec2 describe-security-groups --query 'SecurityGroups[*].GroupName' --output table --region ap-south-1
+#list only the Security Group names
+
+aws ec2 describe-security-groups --region ap-south-1 --query 'SecurityGroups[*].[GroupId,GroupName,VpcId]' --output table
+#list Security Groups in a specific region
+
+aws ec2 describe-vpcs --query 'Vpcs[*].[VpcId,IsDefault,CidrBlock]' --output table --region ap-south-1
+#List all Vpcs
+
+aws ec2 create-security-group --group-name test-sg --description "My new security group" --vpc-id vpc-0b890a750294e4c08
+#create security group in aws
+
+aws ec2 authorize-security-group-ingress --group-id sg-0123456789abcdef --protocol tcp --port 22 --cidr YOUR_IP/32 --region ap-south-1
+#allow SSH (port 22) from your IP
+
+aws ec2 authorize-security-group-ingress --group-id sg-0123456789abcdef --protocol tcp --port 80 --cidr 0.0.0.0/0 --region ap-south-1
+#For HTTP
+
+aws ec2 authorize-security-group-ingress \
+  --group-id sg-0123456789abcdef \
+  --protocol tcp \
+  --port 443 \
+  --cidr 0.0.0.0/0 \
+  --region ap-south-1
+#for Https
+
+aws ec2 delete-security-group \
+  --group-id sg-0123456789abcdef
+#Delete a Security Group By Using the Security Group ID
+
+aws ec2 delete-security-group \
+  --group-name test-sg
+or
+aws ec2 delete-security-group --group-name test-sg --region ap-south-1
+#Delete a Security Group By Using the Security Group Name
+
+aws ec2 describe-security-groups \
+  --group-ids sg-0123456789abcdef \
+  --query 'SecurityGroups[*].[GroupId,GroupName,VpcId,Description]' \
+  --output table \
+  --region ap-south-1
+or
+aws ec2 describe-security-groups --group-ids sg-0123456789abcdef --query 'SecurityGroups[*].[GroupId,GroupName,VpcId,Description]' --output table --region ap-south-1
+#verify the security group
+
+aws ec2 delete-security-group `
+  --group-id sg-0fbd9214b95bdae92 `
+  --region ap-south-1
+or
+aws ec2 delete-security-group --group-id sg-0fbd9214b95bdae92 --region ap-south-1
+#delete the security group
+
+aws ec2 create-security-group --group-name my-new-sg --description "My new security group" --vpc-id vpc-0b890a750294e4c08
+
+sg-0fbd9214b95bdae92
+aws ec2 authorize-security-group-ingress --group-id sg-0fbd9214b95bdae92 --protocol tcp --port 22 --cidr 0.0.0.0/0 --region ap-south-1
+aws ec2 describe-security-groups --group-ids sg-0fbd9214b95bdae92 --query 'SecurityGroups[*].[GroupId,GroupName,VpcId,Description]' --output table --region ap-south-1
+aws ec2 delete-security-group --group-id sg-0fbd9214b95bdae92 --region ap-south-1
+aws ec2 describe-security-groups --group-ids sg-0fbd9214b95bdae92 --query 'SecurityGroups[*].[GroupId,GroupName,VpcId,Description]' --output table --region ap-south-1
+
+
+aws ec2 describe-security-groups \
+  --group-id sg-0fbd9214b95bdae92 \
+  --output table
+or
+aws ec2 describe-security-groups --group-id sg-0fbd9214b95bdae92 --output table --region ap-south-1
+#See inbound + outbound rules for a Security Group
+
+This shows the full details, including:
+IpPermissions → Inbound rules
+IpPermissionsEgress → Outbound rules
+
+aws ec2 describe-security-groups \
+  --group-id sg-0123456789abcdef \
+  --query 'SecurityGroups[0].IpPermissions' \
+  --output table
+or
+aws ec2 describe-security-groups --group-id sg-0fbd9214b95bdae92 --query 'SecurityGroups[0].IpPermissions' --output table --region ap-south-1
+#See only inbound rules
+
+aws ec2 describe-security-groups \
+  --group-id sg-0123456789abcdef \
+  --query 'SecurityGroups[0].IpPermissions[*].[IpProtocol,FromPort,ToPort,IpRanges[*].CidrIp]' \
+  --output table
+or
+aws ec2 describe-security-groups --group-id sg-0fbd9214b95bdae92 --query 'SecurityGroups[0].IpPermissions[*].[IpProtocol,FromPort,ToPort,IpRanges[*].CidrIp]' --output table --region ap-south-1
+#See only inbound rules easier-to-read output
+
+aws ec2 authorize-security-group-ingress \
+  --group-id sg-0123456789abcdef \
+  --ip-permissions \
+  IpProtocol=tcp,FromPort=22,ToPort=22,IpRanges='[{CidrIp=0.0.0.0/0,Description="SSH"}]' \
+  IpProtocol=tcp,FromPort=80,ToPort=80,IpRanges='[{CidrIp=0.0.0.0/0,Description="HTTP"}]' \
+  IpProtocol=-1,IpRanges='[{CidrIp=0.0.0.0/0,Description="All Traffic"}]' 
+or
+aws ec2 authorize-security-group-ingress --group-id sg-0fbd9214b95bdae92 --ip-permissions IpProtocol=tcp,FromPort=22,ToPort=22,IpRanges='[{CidrIp=0.0.0.0/0,Description="SSH"}]' IpProtocol=tcp,FromPort=80,ToPort=80,IpRanges='[{CidrIp=0.0.0.0/0,Description="HTTP"}]' IpProtocol=-1,IpRanges='[{CidrIp=0.0.0.0/0,Description="All Traffic"}]' --region ap-south-1
+#add SSH (22), HTTP (80), and All Traffic inbound rules in a single AWS CLI command using authorize-security-group-ingress
+
+aws ec2 describe-security-groups `
+  --group-id sg-0fbd9214b95bdae92 `
+  --region ap-south-1 `
+  --query "SecurityGroups[0].IpPermissions[*].[IpProtocol,FromPort,ToPort,join(',',IpRanges[*].CidrIp)]" `
+  --output table
+or
+aws ec2 describe-security-groups --group-id sg-0fbd9214b95bdae92 --region ap-south-1 --query "SecurityGroups[0].IpPermissions[*].[IpProtocol,FromPort,ToPort,join(',',IpRanges[*].CidrIp)]" --output table
+#display the results in table format
