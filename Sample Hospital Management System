@@ -1,0 +1,909 @@
+<html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CityCare Hospital</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8fb;
+            color: #333;
+        }
+
+        /* Header */
+
+        header {
+            background: #087f8c;
+            color: white;
+            padding: 18px 50px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        nav a:hover {
+            color: #b2ebf2;
+        }
+
+        /* Hero */
+
+        .hero {
+            background: linear-gradient(
+                rgba(0, 80, 90, 0.75),
+                rgba(0, 80, 90, 0.75)
+            );
+
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+        }
+
+        /* Container */
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #087f8c;
+            margin-bottom: 30px;
+        }
+
+        /* Services */
+
+        .services {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 20px;
+        }
+
+        .service {
+            background: white;
+            padding: 25px;
+            text-align: center;
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .service h3 {
+            color: #087f8c;
+            margin-bottom: 10px;
+        }
+
+        /* Doctors */
+
+        .doctors {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 20px;
+        }
+
+        .doctor {
+            background: white;
+            padding: 25px;
+            text-align: center;
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .doctor-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .doctor h3 {
+            color: #087f8c;
+        }
+
+        .doctor p {
+            margin-top: 8px;
+        }
+
+        /* Form */
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #087f8c;
+            color: white;
+
+            border: none;
+            padding: 12px 25px;
+
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #05636d;
+        }
+
+        /* Result */
+
+        .result {
+            display: none;
+
+            margin-top: 20px;
+            padding: 20px;
+
+            background: #e0f7fa;
+            border-left: 5px solid #087f8c;
+
+            border-radius: 5px;
+        }
+
+        /* Statistics */
+
+        .stats {
+            background: #087f8c;
+            color: white;
+
+            display: flex;
+            justify-content: space-around;
+
+            padding: 35px;
+            text-align: center;
+        }
+
+        .stat h2 {
+            font-size: 32px;
+        }
+
+        /* Footer */
+
+        footer {
+            background: #163238;
+            color: white;
+
+            text-align: center;
+            padding: 25px;
+        }
+
+        footer p {
+            margin: 7px;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 700px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 8px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 25px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- Header -->
+
+    <header>
+
+        <div class="logo">
+            🏥 CityCare Hospital
+        </div>
+
+        <nav>
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#services">
+                Services
+            </a>
+
+            <a href="#doctors">
+                Doctors
+            </a>
+
+            <a href="#appointment">
+                Appointment
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- Hero -->
+
+    <section class="hero" id="home">
+
+        <h1>
+            Welcome to CityCare Hospital
+        </h1>
+
+        <p>
+            Quality Healthcare With Compassion
+        </p>
+
+    </section>
+
+
+    <!-- Services -->
+
+    <section class="container" id="services">
+
+        <h2 class="section-title">
+            Our Services
+        </h2>
+
+        <div class="services">
+
+
+            <div class="service">
+
+                <div class="service-icon">
+                    🚑
+                </div>
+
+                <h3>
+                    Emergency Care
+                </h3>
+
+                <p>
+                    24/7 emergency medical services.
+                </p>
+
+            </div>
+
+
+            <div class="service">
+
+                <div class="service-icon">
+                    ❤️
+                </div>
+
+                <h3>
+                    Cardiology
+                </h3>
+
+                <p>
+                    Specialized heart care.
+                </p>
+
+            </div>
+
+
+            <div class="service">
+
+                <div class="service-icon">
+                    🧠
+                </div>
+
+                <h3>
+                    Neurology
+                </h3>
+
+                <p>
+                    Advanced neurological treatment.
+                </p>
+
+            </div>
+
+
+            <div class="service">
+
+                <div class="service-icon">
+                    👶
+                </div>
+
+                <h3>
+                    Pediatrics
+                </h3>
+
+                <p>
+                    Complete healthcare for children.
+                </p>
+
+            </div>
+
+
+            <div class="service">
+
+                <div class="service-icon">
+                    🦷
+                </div>
+
+                <h3>
+                    Dental Care
+                </h3>
+
+                <p>
+                    Professional dental services.
+                </p>
+
+            </div>
+
+
+            <div class="service">
+
+                <div class="service-icon">
+                    🔬
+                </div>
+
+                <h3>
+                    Laboratory
+                </h3>
+
+                <p>
+                    Diagnostic and laboratory services.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Doctors -->
+
+    <section class="container" id="doctors">
+
+        <h2 class="section-title">
+            Our Doctors
+        </h2>
+
+        <div class="doctors">
+
+
+            <div class="doctor">
+
+                <div class="doctor-icon">
+                    👨‍⚕️
+                </div>
+
+                <h3>
+                    Dr. Raj Kumar
+                </h3>
+
+                <p>
+                    Cardiologist
+                </p>
+
+                <p>
+                    15 Years Experience
+                </p>
+
+            </div>
+
+
+            <div class="doctor">
+
+                <div class="doctor-icon">
+                    👩‍⚕️
+                </div>
+
+                <h3>
+                    Dr. Priya Sharma
+                </h3>
+
+                <p>
+                    Neurologist
+                </p>
+
+                <p>
+                    12 Years Experience
+                </p>
+
+            </div>
+
+
+            <div class="doctor">
+
+                <div class="doctor-icon">
+                    👨‍⚕️
+                </div>
+
+                <h3>
+                    Dr. Arun Kumar
+                </h3>
+
+                <p>
+                    Pediatrician
+                </p>
+
+                <p>
+                    10 Years Experience
+                </p>
+
+            </div>
+
+
+            <div class="doctor">
+
+                <div class="doctor-icon">
+                    👩‍⚕️
+                </div>
+
+                <h3>
+                    Dr. Anjali Rao
+                </h3>
+
+                <p>
+                    General Physician
+                </p>
+
+                <p>
+                    8 Years Experience
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Appointment -->
+
+    <section class="container" id="appointment">
+
+        <h2 class="section-title">
+            Book an Appointment
+        </h2>
+
+        <div class="form-container">
+
+            <form onsubmit="bookAppointment(event)">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Patient Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="patientName"
+                        placeholder="Enter patient name"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Age
+                    </label>
+
+                    <input
+                        type="number"
+                        id="age"
+                        min="1"
+                        max="120"
+                        placeholder="Enter age"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Enter phone number"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Department
+                    </label>
+
+                    <select id="department" required>
+
+                        <option value="">
+                            Select Department
+                        </option>
+
+                        <option>
+                            Cardiology
+                        </option>
+
+                        <option>
+                            Neurology
+                        </option>
+
+                        <option>
+                            Pediatrics
+                        </option>
+
+                        <option>
+                            Dental
+                        </option>
+
+                        <option>
+                            General Medicine
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Doctor
+                    </label>
+
+                    <select id="doctor" required>
+
+                        <option value="">
+                            Select Doctor
+                        </option>
+
+                        <option>
+                            Dr. Raj Kumar
+                        </option>
+
+                        <option>
+                            Dr. Priya Sharma
+                        </option>
+
+                        <option>
+                            Dr. Arun Kumar
+                        </option>
+
+                        <option>
+                            Dr. Anjali Rao
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Appointment Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="appointmentDate"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Appointment Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="appointmentTime"
+                        required>
+
+                </div>
+
+
+                <button type="submit">
+                    Book Appointment
+                </button>
+
+            </form>
+
+
+            <div
+                class="result"
+                id="appointmentResult">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Statistics -->
+
+    <section class="stats">
+
+
+        <div class="stat">
+
+            <h2>
+                100+
+            </h2>
+
+            <p>
+                Doctors
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>
+                500+
+            </h2>
+
+            <p>
+                Beds
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>
+                50,000+
+            </h2>
+
+            <p>
+                Patients
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>
+                24/7
+            </h2>
+
+            <p>
+                Emergency
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <p>
+            📍 123 Main Street, Hyderabad
+        </p>
+
+        <p>
+            📞 +91 98765 43210
+        </p>
+
+        <p>
+            📧 info@citycarehospital.com
+        </p>
+
+        <p>
+            © 2026 CityCare Hospital
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+
+    <script>
+
+        let appointmentCount = 0;
+
+
+        function bookAppointment(event) {
+
+            event.preventDefault();
+
+
+            const patientName =
+                document.getElementById(
+                    "patientName"
+                ).value;
+
+
+            const age =
+                document.getElementById(
+                    "age"
+                ).value;
+
+
+            const department =
+                document.getElementById(
+                    "department"
+                ).value;
+
+
+            const doctor =
+                document.getElementById(
+                    "doctor"
+                ).value;
+
+
+            const date =
+                document.getElementById(
+                    "appointmentDate"
+                ).value;
+
+
+            const time =
+                document.getElementById(
+                    "appointmentTime"
+                ).value;
+
+
+            appointmentCount++;
+
+
+            const appointmentId =
+                "CC" +
+                String(appointmentCount)
+                    .padStart(4, "0");
+
+
+            const result =
+                document.getElementById(
+                    "appointmentResult"
+                );
+
+
+            result.style.display = "block";
+
+
+            result.innerHTML = `
+
+                <strong>
+                    Appointment Confirmed!
+                </strong>
+
+                <br><br>
+
+                Appointment ID:
+                <strong>
+                    ${appointmentId}
+                </strong>
+
+                <br>
+
+                Patient:
+                ${patientName}
+
+                <br>
+
+                Age:
+                ${age}
+
+                <br>
+
+                Department:
+                ${department}
+
+                <br>
+
+                Doctor:
+                ${doctor}
+
+                <br>
+
+                Date:
+                ${date}
+
+                <br>
+
+                Time:
+                ${time}
+
+            `;
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
