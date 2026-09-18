@@ -16,6 +16,7 @@ step 3:
 yum install unzip tree wget -y
 
 wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.104/bin/apache-tomcat-9.0.104.zip
+wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.122/bin/apache-tomcat-9.0.122.zip
 
 step 4:
 unzip apache-tomcat-9.0.104.zip
