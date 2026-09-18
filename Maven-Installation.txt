@@ -1,0 +1,89 @@
+Install Maven
+**********************
+sudo su -
+#Switch to Root User
+
+apt update
+#Update the package index
+
+apt upgrade -y
+#Optional: upgrade installed packages
+
+java -version
+javac -version
+#Check whether Java is already installed
+
+apt search openjdk
+#Search for OpenJDK packages
+
+apt install openjdk-21-jdk -y
+#Install JDK 21
+
+java -version
+javac -version
+#check java Version
+
+which java
+#Check Java Location Path
+
+update-alternatives --config java
+#check the installed Java alternatives
+
+cd /opt
+#Go to /opt
+
+apt install wget unzip tree git -y
+#Install the required packages
+
+https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.tar.gz   (or)
+https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.zip
+wget https://dlcdn.apache.org/maven/maven-3/3.9.12/binaries/apache-maven-3.9.12-bin.zip   (or)
+wget https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.zip
+#Download Maven 
+
+unzip apache-maven-3.9.12-bin.zip  (or)
+unzip apache-maven-3.9.16-bin.zip
+#Unzip
+
+ls -l /opt/apache-maven-3.9.12
+ls -l /opt/apache-maven-3.9.16
+#check
+
+vi ~/.bashrc
+#Set Maven Environment Variables
+
+export M2_HOME=/opt/apache-maven-3.9.12
+export PATH=$PATH:$M2_HOME/bin
+#add these lines to .bashrc file
+
+source ~/.bashrc
+#Save and exit, then reload
+
+mvn -version
+#verify
+
+sudo su -
+
+apt update
+apt upgrade -y
+
+apt install openjdk-21-jdk -y
+
+java -version
+javac -version
+
+cd /opt
+
+apt install wget unzip tree git -y
+
+wget https://dlcdn.apache.org/maven/maven-3/3.9.12/binaries/apache-maven-3.9.12-bin.zip
+
+unzip apache-maven-3.9.12-bin.zip
+
+echo 'export M2_HOME=/opt/apache-maven-3.9.12' >> ~/.bashrc
+echo 'export PATH=$PATH:$M2_HOME/bin' >> ~/.bashrc
+
+source ~/.bashrc
+
+mvn -version
+#Complete command sequence
