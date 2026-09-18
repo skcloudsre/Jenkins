@@ -87,3 +87,11 @@ source ~/.bashrc
 
 mvn -version
 #Complete command sequence
+
+
+mvn clean        # Deletes target folder
+mvn compile      # Compiles code
+mvn test         # Runs test cases
+mvn package      # Creates JAR/WAR
+mvn install      # Installs into local repo
+mvn deploy       # Deploys to remote repo
