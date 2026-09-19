@@ -1,0 +1,283 @@
+# Apache Tomcat Installation Guide on Ubuntu 24.04 / 24.10
+
+> **Note:** Ubuntu **24.06** does not exist. Ubuntu uses a **YY.MM** versioning scheme.
+> You likely mean **Ubuntu 24.04 LTS (Noble Numbat)** or **Ubuntu 24.10 (Oracular Oriole)**.
+> The steps below work on both.
+
+---
+
+## Prerequisites
+
+- A running Ubuntu 24.04 or 24.10 server/desktop
+- A user with `sudo` privileges
+- Internet connectivity
+
+---
+
+## Step 1 — Update the System
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+---
+
+## Step 2 — Install Java (JDK)
+
+Tomcat requires Java. Install the default JDK (OpenJDK 21 on Ubuntu 24.04+):
+
+```bash
+sudo apt install default-jdk -y
+```
+
+Verify the installation:
+
+```bash
+java -version
+```
+
+Expected output (example):
+
+```
+openjdk version "21.0.x" ...
+```
+
+---
+
+## Step 3 — Create a Tomcat User
+
+For security, Tomcat should run under its own unprivileged user:
+
+```bash
+sudo groupadd tomcat
+sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
+```
+
+---
+
+## Step 4 — Download Apache Tomcat
+
+> Check the latest version at <https://tomcat.apache.org/download-10.cgi> (or 11.x if preferred).
+
+```bash
+# Set the desired Tomcat version
+TOMCAT_VERSION=10.1.34
+
+# Download
+cd /tmp
+wget https://dlcdn.apache.org/tomcat/tomcat-10/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz
+```
+
+---
+
+## Step 5 — Install Tomcat
+
+```bash
+# Create installation directory
+sudo mkdir -p /opt/tomcat
+
+# Extract the archive
+sudo tar -xzf /tmp/apache-tomcat-${TOMCAT_VERSION}.tar.gz -C /opt/tomcat --strip-components=1
+
+# Set ownership
+sudo chown -R tomcat:tomcat /opt/tomcat
+
+# Make scripts executable
+sudo chmod +x /opt/tomcat/bin/*.sh
+```
+
+---
+
+## Step 6 — Set Up Environment Variable (JAVA_HOME)
+
+Find the Java installation path:
+
+```bash
+sudo update-java-alternatives -l
+```
+
+Note the path (e.g., `/usr/lib/jvm/java-21-openjdk-amd64`).
+
+---
+
+## Step 7 — Create a Systemd Service File
+
+```bash
+sudo nano /etc/systemd/system/tomcat.service
+```
+
+Paste the following content (adjust `JAVA_HOME` if needed):
+
+```ini
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=network.target
+
+[Service]
+Type=forking
+
+User=tomcat
+Group=tomcat
+
+Environment="JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64"
+Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
+Environment="CATALINA_HOME=/opt/tomcat"
+Environment="CATALINA_BASE=/opt/tomcat"
+Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
+
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
+
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Save and close the file (`Ctrl + O`, `Enter`, `Ctrl + X`).
+
+---
+
+## Step 8 — Start and Enable Tomcat
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl start tomcat
+sudo systemctl enable tomcat
+```
+
+Check the status:
+
+```bash
+sudo systemctl status tomcat
+```
+
+You should see **active (running)**.
+
+---
+
+## Step 9 — Configure the Firewall (UFW)
+
+```bash
+sudo ufw allow 8080/tcp
+sudo ufw reload
+```
+
+---
+
+## Step 10 — Test the Installation
+
+Open your browser and navigate to:
+
+```
+http://<your-server-ip>:8080
+```
+
+You should see the **Apache Tomcat** default welcome page.
+
+---
+
+## Step 11 — Configure Tomcat Web Management (Optional)
+
+### 11.1 — Add an Admin User
+
+```bash
+sudo nano /opt/tomcat/conf/tomcat-users.xml
+```
+
+Add the following lines **before** the closing `</tomcat-users>` tag:
+
+```xml
+<!-- Tomcat Manager and Admin roles -->
+<role rolename="manager-gui"/>
+<role rolename="admin-gui"/>
+<user username="admin" password="your_strong_password" roles="manager-gui,admin-gui"/>
+```
+
+### 11.2 — Allow Remote Access to Manager & Host Manager
+
+By default, access is restricted to localhost. To allow remote access:
+
+**Manager App:**
+
+```bash
+sudo nano /opt/tomcat/webapps/manager/META-INF/context.xml
+```
+
+**Host Manager App:**
+
+```bash
+sudo nano /opt/tomcat/webapps/host-manager/META-INF/context.xml
+```
+
+In both files, comment out or modify the `Valve` section:
+
+```xml
+<!--
+<Valve className="org.apache.catalina.valves.RemoteAddrValve"
+       allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />
+-->
+```
+
+> ⚠️ **Security Warning:** Only do this in development/testing environments. For production, use a reverse proxy or restrict by IP.
+
+### 11.3 — Restart Tomcat
+
+```bash
+sudo systemctl restart tomcat
+```
+
+---
+
+## Useful Commands
+
+| Action                  | Command                            |
+| ----------------------- | ---------------------------------- |
+| Start Tomcat            | `sudo systemctl start tomcat`      |
+| Stop Tomcat             | `sudo systemctl stop tomcat`       |
+| Restart Tomcat          | `sudo systemctl restart tomcat`    |
+| Check Status            | `sudo systemctl status tomcat`     |
+| View Logs               | `sudo tail -f /opt/tomcat/logs/catalina.out` |
+| Enable on Boot          | `sudo systemctl enable tomcat`     |
+| Disable on Boot         | `sudo systemctl disable tomcat`    |
+
+---
+
+## Directory Structure
+
+```
+/opt/tomcat/
+├── bin/          # Startup/shutdown scripts
+├── conf/         # Configuration files (server.xml, tomcat-users.xml, etc.)
+├── lib/          # Tomcat libraries
+├── logs/         # Log files
+├── temp/         # Temporary files
+├── webapps/      # Web application deployment directory
+└── work/         # Compiled JSP files and other work files
+```
+
+---
+
+## Uninstallation (if needed)
+
+```bash
+sudo systemctl stop tomcat
+sudo systemctl disable tomcat
+sudo rm /etc/systemd/system/tomcat.service
+sudo rm -rf /opt/tomcat
+sudo userdel -r tomcat
+sudo groupdel tomcat
+sudo systemctl daemon-reload
+```
+
+---
+
+## References
+
+- [Apache Tomcat Official Documentation](https://tomcat.apache.org/tomcat-10.1-doc/index.html)
+- [Ubuntu Official Documentation](https://ubuntu.com/server/docs)
+
+---
+
+> **Tip:** For production deployments, consider placing Tomcat behind a reverse proxy like **Nginx** or **Apache HTTP Server** and enabling **HTTPS** with SSL/TLS certificates.
